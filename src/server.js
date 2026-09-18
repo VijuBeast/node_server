@@ -31,9 +31,14 @@ app.get("/students", (req, res) => {
 
 // Get student by ID
 app.get("/students/:id", (req, res) => {
-  const student = students.find(
-    (student) => student.id === Number(req.params.id)
-  );
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({
+      message: "Invalid student ID"
+    });
+  }
+
+   const student = students.find((s) => s.id === id);
 
   if (!student) {
     return res.status(404).json({
